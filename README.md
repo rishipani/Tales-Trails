@@ -127,12 +127,11 @@ reviews        — id, user_id, book_id, rating, title, body
 
 ---
 
-## 🔑 Demo Credentials
+## 🔑 Demo Credentials for Admin
 
 | Email               | Password      |
 | ------------------- | ------------- |
-| `aanya@example.com` | `password123` |
-| `jane@example.com`  | `password456` |
+| `admin@talesandtrails.com` | `Admin@TT2025` |
 
 ---
 
