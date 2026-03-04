@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+ <title>Tales & Trails — Your Next Story Starts Here</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,700&family=Outfit:wght@200;300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="loader" class="loader">
+ <canvas id="loaderCanvas" class="loader-canvas"></canvas>
+ <div class="loader-content">
+ <div class="loader-wordmark">
+ <span class="lw-t">T</span><span class="lw-amp">&amp;</span><span class="lw-t2">T</span>
+ </div>
+ <p class="loader-line">Preparing your universe…</p>
+ <div class="loader-progress"><div class="loader-fill" id="loaderFill"></div></div>
+ <div class="loader-pct" id="loaderPct">0</div>
+ </div>
+</div>
+<div id="wipe" class="wipe"><span class="wipe-logo">T&T</span></div>
+<canvas id="stars" class="stars-canvas"></canvas>
+<nav class="nav" id="nav">
+ <div class="nav-wrap">
+ <a href="#" class="nav-brand" data-page="home">
+ <div class="brand-glyph">T&amp;T</div>
+ <div class="brand-text">
+ <span class="brand-name">Tales &amp; Trails</span>
+ <span class="brand-tagline">Curated Reads</span>
+ </div>
+ </a>
+ <div class="nav-center">
+ <a href="#" class="nl" data-page="home"><span class="nl-idx">01</span><span class="nl-name">Catalogue</span><span class="nl-bar"></span></a>
+ <a href="#" class="nl" data-page="cart" id="cartNavLink"><span class="nl-idx">02</span><span class="nl-name">Cart</span><span class="nl-bar"></span><span class="cart-pill" id="cartCount" style="display:none">0</span></a>
+ <a href="#" class="nl" data-page="wishlist" id="wishlistNavLink" style="display:none"><span class="nl-idx">03</span><span class="nl-name">Wishlist</span><span class="nl-bar"></span><span class="cart-pill" id="wishlistCount" style="display:none">0</span></a>
+ <a href="#" class="nl" data-page="profile" id="profileNavLink" style="display:none"><span class="nl-idx">04</span><span class="nl-name">Account</span><span class="nl-bar"></span></a>
+ </div>
+ <div class="nav-end">
+ <button class="nav-icon-btn" id="searchToggle">
+ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+ </button>
+ <a href="#" class="btn-enter" id="authLink" data-page="auth">Enter</a>
+ <div class="nav-user-chip hidden" id="navUser">
+ <div class="nuc-avatar" id="nucAvatar">A</div>
+ <span id="userName"></span>
+ </div>
+ <button class="btn-exit hidden" id="logoutBtn">Exit </button>
+ </div>
+ </div>
+</nav>
+<div class="search-ov" id="searchOv">
+ <button class="search-ov-close" id="searchClose"></button>
+ <div class="search-ov-inner">
+ <p class="search-ov-label">What story are you seeking?</p>
+ <div class="search-ov-field">
+ <input type="text" id="searchInput" class="search-ov-input" placeholder="Type a title or author…" autocomplete="off">
+ <div class="search-underline"></div>
+ </div>
+ <div class="search-ov-live" id="searchLive"></div>
+ </div>
+</div>
+<main id="main">
+ <section id="homePage" class="page active">
+ <div class="hero">
+ <div class="hero-noise"></div>
+ <div class="hero-vignette"></div>
+ <div class="hero-body">
+ <div class="hero-left">
+ <div class="hero-badge">
+ <span class="badge-dot"></span>
+ <span>Handpicked · Extraordinary · Transformative</span>
+ </div>
+ <h1 class="hero-h1">
+ <span class="hh-row" style="--d:0ms">Where every</span>
+ <span class="hh-row hh-italic" style="--d:120ms"><em>Tale</em> leads</span>
+ <span class="hh-row" style="--d:240ms">to a new <em>Trail</em></span>
+ </h1>
+ <p class="hero-desc">Books that don't just fill shelves — they reshape minds, ignite imagination, and become a permanent part of who you are.</p>
+ <div class="hero-actions">
+ <button class="btn-hero" id="scrollToCat">
+ <div class="btn-hero-bg"></div>
+ <span>Explore the Collection</span>
+ <svg class="btn-hero-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+ </button>
+ <div class="hero-nums">
+ <div class="hn"><span class="hn-v">15+</span><span class="hn-k">Titles</span></div>
+ <div class="hn-sep"></div>
+ <div class="hn"><span class="hn-v">6</span><span class="hn-k">Genres</span></div>
+ <div class="hn-sep"></div>
+ <div class="hn"><span class="hn-v">4.5</span><span class="hn-k">Avg Rating</span></div>
+ </div>
+ </div>
+ </div>
+ <div class="hero-right">
+ <div class="hero-stack" id="heroStack"></div>
+ </div>
+ </div>
+ <div class="hero-scroll">
+ <div class="hs-wheel"><div class="hs-knob"></div></div>
+ <span>scroll</span>
+ </div>
+ </div>
+ <div class="ticker">
+ <div class="ticker-track">
+ <span>Fiction</span><b></b><span>Sci-Fi</span><b></b><span>Non-Fiction</span><b></b><span>Self-Help</span><b></b><span>Technology</span><b></b><span>Mystery</span><b></b><span>Biography</span><b></b><span>Romance</span><b></b>
+ <span>Fiction</span><b></b><span>Sci-Fi</span><b></b><span>Non-Fiction</span><b></b><span>Self-Help</span><b></b><span>Technology</span><b></b><span>Mystery</span><b></b><span>Biography</span><b></b><span>Romance</span><b></b>
+ </div>
+ </div>
+ <div class="cat-section" id="catSection">
+ <div class="cat-header">
+ <div class="cat-title-wrap">
+ <h2 class="cat-h2">The Collection</h2>
+ <p class="cat-sub">Every book a universe waiting to be explored</p>
+ </div>
+ <div class="cat-controls">
+ <div class="chip-row" id="chipRow"></div>
+ <div class="sort-box">
+ <span class="sort-label">Sort</span>
+ <select id="sortFilter" class="sort-select">
+ <option value="rating-desc">Top Rated</option>
+ <option value="name-asc">A Z</option>
+ <option value="name-desc">Z A</option>
+ <option value="price-asc">Price </option>
+ <option value="price-desc">Price </option>
+ </select>
+ </div>
+ </div>
+ </div>
+ <div class="books-grid" id="booksGrid"></div>
+ <div class="cat-empty hidden" id="catEmpty">
+ <p class="cat-empty-icon"></p>
+ <h3>No stories found</h3>
+ <p>Try different filters</p>
+ </div>
+ </div>
+ </section>
+ <section id="authPage" class="page">
+ <div class="auth-scene">
+ <div class="auth-orbs">
+ <div class="auth-orb ao1"></div>
+ <div class="auth-orb ao2"></div>
+ <div class="auth-orb ao3"></div>
+ </div>
+ <div class="auth-layout">
+ <div class="auth-visual-side">
+ <div class="av-mark">T&amp;T</div>
+ <h2 class="av-h2">Your next obsession<br><em>is one page away.</em></h2>
+ <p class="av-sub">Join thousands of readers who believe stories are the most powerful technology ever invented.</p>
+ <div class="av-quote">
+ <q>A reader lives a thousand lives before he dies.</q>
+ <cite>— George R.R. Martin</cite>
+ </div>
+ <div class="av-books" id="avBooks"></div>
+ </div>
+ <div class="auth-form-side">
+ <div class="auth-tabs">
+ <button class="at-btn active" data-tab="login">Sign In</button>
+ <button class="at-btn" data-tab="register">Register</button>
+ <button class="at-btn at-btn-admin" data-tab="admin">Admin</button>
+ <div class="at-indicator" id="atIndicator"></div>
+ </div>
+ <form id="adminLoginForm" class="af">
+ <div style="text-align:center;margin-bottom:20px">
+   <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(201,147,58,0.12);border:1px solid rgba(201,147,58,0.3);border-radius:8px;padding:8px 16px">
+     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9933a" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+     <span style="font-size:0.78rem;color:#c9933a;font-weight:600;letter-spacing:.08em;text-transform:uppercase">Admin Portal</span>
+   </div>
+ </div>
+ <div class="ff"><input type="email" id="adminLoginEmail" class="fi" placeholder=" " autocomplete="email" required><label class="fl">Admin Email</label><div class="fbar"></div></div>
+ <div class="ff"><input type="password" id="adminLoginPassword" class="fi" placeholder=" " autocomplete="current-password" required><label class="fl">Admin Password</label><div class="fbar"></div></div>
+ <button type="submit" class="btn-submit" style="background:linear-gradient(135deg,#c9933a,#e8b86d)"><span>Access Admin Panel</span><div class="btn-submit-shine"></div></button>
+ <p id="adminLoginErr" style="text-align:center;margin-top:12px;font-size:0.82rem;color:#e55a5a;min-height:18px"></p>
+ </form>
+ <form id="loginForm" class="af active">
+ <div class="ff"><input type="email" id="loginEmail" class="fi" placeholder=" " autocomplete="email" required><label class="fl">Email</label><div class="fbar"></div></div>
+ <div class="ff"><input type="password" id="loginPassword" class="fi" placeholder=" " autocomplete="current-password" required><label class="fl">Password</label><div class="fbar"></div></div>
+ <button type="submit" class="btn-submit"><span>Enter the Library</span><div class="btn-submit-shine"></div></button>
+ <p style="text-align:center;margin-top:16px;font-size:0.85rem">
+ <a href="#" id="forgotLink" style="color:var(--gold,#c9933a);text-decoration:none">Forgot password?</a>
+ </p>
+ </form>
+ <div id="forgotFlow" class="af hidden">
+ <button id="forgotBackBtn" class="btn-back-inline" type="button">&#8592; Back to Sign In</button>
+ <h3 class="auth-flow-title">Reset Password</h3>
+ <div id="fgtStep1">
+ <p class="auth-flow-sub">Enter your account email and we&apos;ll send a reset code.</p>
+ <div class="ff"><input type="email" id="fgtEmail" class="fi" placeholder=" "><label class="fl">Account Email</label><div class="fbar"></div></div>
+ <button class="btn-submit" id="fgtStep1Btn" type="button"><span>Send Reset Code</span><div class="btn-submit-shine"></div></button>
+ </div>
+ <div id="fgtStep2" class="hidden">
+ <p class="auth-flow-sub">Enter the 6-digit code sent to your email.</p>
+ <div class="ff"><input type="text" id="fgtOTP" class="fi otp-input" placeholder=" " maxlength="6" inputmode="numeric"><label class="fl">6-Digit Code</label><div class="fbar"></div></div>
+ <button class="btn-submit" id="fgtStep2Btn" type="button"><span>Verify Code</span><div class="btn-submit-shine"></div></button>
+ <p class="otp-timer-line"><span id="fgtTimer" class="otp-timer"></span> <button id="fgtResendBtn" class="btn-text-link" type="button">Resend</button></p>
+ </div>
+ <div id="fgtStep3" class="hidden">
+ <p class="auth-flow-sub">Choose a strong new password.</p>
+ <div class="ff"><input type="password" id="fgtPassword" class="fi" placeholder=" " minlength="6"><label class="fl">New Password</label><div class="fbar"></div></div>
+ <div class="ff"><input type="password" id="fgtConfirmPassword" class="fi" placeholder=" "><label class="fl">Confirm Password</label><div class="fbar"></div></div>
+ <button class="btn-submit" id="fgtStep3Btn" type="button"><span>Reset Password</span><div class="btn-submit-shine"></div></button>
+ </div>
+ </div>
+ <div id="registerForm" class="af">
+ <div class="auth-step-indicator" id="regStepIndicator">Step 1 of 3</div>
+ <div id="regStep1">
+ <p class="auth-flow-sub">Create your account &mdash; we&apos;ll verify your email first.</p>
+ <div class="ff"><input type="text" id="regName" class="fi" placeholder=" "><label class="fl">Full Name</label><div class="fbar"></div></div>
+ <div class="ff"><input type="email" id="regEmail" class="fi" placeholder=" " autocomplete="email"><label class="fl">Email Address</label><div class="fbar"></div></div>
+ <button class="btn-submit" id="regStep1Btn" type="button"><span>Send Verification Code</span><div class="btn-submit-shine"></div></button>
+ </div>
+ <div id="regStep2" class="hidden">
+ <p class="auth-flow-sub">We sent a 6-digit code to <strong id="regEmailDisplay" style="color:var(--gold,#c9933a)"></strong></p>
+ <div class="ff"><input type="text" id="regOTP" class="fi otp-input" placeholder=" " maxlength="6" inputmode="numeric"><label class="fl">Verification Code</label><div class="fbar"></div></div>
+ <button class="btn-submit" id="regStep2Btn" type="button"><span>Verify OTP</span><div class="btn-submit-shine"></div></button>
+ <p class="otp-timer-line"><span id="regTimer" class="otp-timer"></span> <button id="regResendBtn" class="btn-text-link" type="button">Resend OTP</button></p>
+ </div>
+ <div id="regStep3" class="hidden">
+ <p class="auth-flow-sub">&#10003; Email verified! Now set a secure password.</p>
+ <div class="ff"><input type="password" id="regPassword" class="fi" placeholder=" " minlength="6"><label class="fl">Password</label><div class="fbar"></div></div>
+ <div class="ff"><input type="password" id="regConfirmPassword" class="fi" placeholder=" "><label class="fl">Confirm Password</label><div class="fbar"></div></div>
+ <button class="btn-submit" id="regStep3Btn" type="button"><span>Create Account</span><div class="btn-submit-shine"></div></button>
+ </div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
+ <section id="cartPage" class="page">
+ <div class="inner-wrap">
+ <div class="iw-head">
+ <span class="iw-tag">Your Selection</span>
+ <h2 class="iw-h2">Shopping Cart</h2>
+ <p class="iw-sub" id="cartCountText">0 items awaiting you</p>
+ </div>
+ <div class="cart-layout">
+ <div class="cart-left" id="cartItems"></div>
+ <div class="cart-empty hidden" id="cartEmpty">
+ <div class="empty-big-icon"></div>
+ <h3>Your cart is empty</h3>
+ <p>Discover a story that will change you</p>
+ <button class="btn-primary" data-page="home">Explore Books</button>
+ </div>
+ <div class="cart-right" id="cartRight">
+ <div class="order-glass">
+ <div class="og-title">Order Summary</div>
+ <div class="og-rows">
+ <div class="og-row"><span>Subtotal</span><span id="subtotal">Rs 0</span></div>
+ <div class="og-row"><span>Tax (8%)</span><span id="tax">Rs 0</span></div>
+ </div>
+ <div class="og-sep"></div>
+ <div class="og-total"><span>Total</span><span class="og-total-val" id="total">Rs 0</span></div>
+ <button class="btn-checkout" id="checkoutBtn">
+ Proceed to Checkout
+ <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+ </button>
+ <div class="trust-badges"><span> Secure</span><span> Fast</span><span> Trusted</span></div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
+ <section id="checkoutPage" class="page">
+ <div class="inner-wrap">
+ <div class="iw-head">
+ <span class="iw-tag">Final Step</span>
+ <h2 class="iw-h2">Checkout</h2>
+ </div>
+ <div class="co-steps">
+ <div class="co-step active"><div class="co-dot">1</div><span>Billing</span></div>
+ <div class="co-connector"></div>
+ <div class="co-step"><div class="co-dot">2</div><span>Payment</span></div>
+ <div class="co-connector"></div>
+ <div class="co-step"><div class="co-dot">3</div><span>Confirm</span></div>
+ </div>
+ <div class="co-layout">
+ <div class="co-form-glass">
+ <form id="checkoutForm">
+ <div class="fb">
+ <h3 class="fb-title">Billing Information</h3>
+ <div class="ff-row">
+ <div class="ff"><input type="text" id="firstName" class="fi" placeholder=" " required><label class="fl">First Name</label><div class="fbar"></div></div>
+ <div class="ff"><input type="text" id="lastName" class="fi" placeholder=" " required><label class="fl">Last Name</label><div class="fbar"></div></div>
+ </div>
+ <div class="ff"><input type="text" id="address" class="fi" placeholder=" " required><label class="fl">Street Address</label><div class="fbar"></div></div>
+ <div class="ff-row3">
+ <div class="ff"><input type="text" id="city" class="fi" placeholder=" " required><label class="fl">City</label><div class="fbar"></div></div>
+ <div class="ff"><input type="text" id="state" class="fi" placeholder=" " required><label class="fl">State</label><div class="fbar"></div></div>
+ <div class="ff"><input type="text" id="zipCode" class="fi" placeholder=" " required><label class="fl">ZIP</label><div class="fbar"></div></div>
+ </div>
+ </div>
+ <div class="fb">
+ <h3 class="fb-title">Payment Method</h3>
+ <div class="pm-grid">
+ <label class="pm-opt"><input type="radio" name="payMethod" value="cod"><div class="pm-card"><span class="pm-ico"></span><span class="pm-lbl">Cash on Delivery</span></div></label>
+ <label class="pm-opt"><input type="radio" name="payMethod" value="card"><div class="pm-card"><span class="pm-ico"></span><span class="pm-lbl">Card</span></div></label>
+ <label class="pm-opt"><input type="radio" name="payMethod" value="upi"><div class="pm-card"><span class="pm-ico"></span><span class="pm-lbl">UPI</span></div></label>
+ </div>
+ <div id="cardFields" class="pm-extra hidden">
+ <div class="ff"><input type="text" id="cardNumber" class="fi" placeholder=" " maxlength="19"><label class="fl">Card Number</label><div class="fbar"></div></div>
+ <div class="ff-row3">
+ <div class="ff"><select id="expiryMonth" class="fi fi-sel"><option value="">MM</option><option>01</option><option>02</option><option>03</option><option>04</option><option>05</option><option>06</option><option>07</option><option>08</option><option>09</option><option>10</option><option>11</option><option>12</option></select><label class="fl fl-up">Month</label><div class="fbar"></div></div>
+ <div class="ff"><select id="expiryYear" class="fi fi-sel"><option value="">YY</option><option>2025</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option></select><label class="fl fl-up">Year</label><div class="fbar"></div></div>
+ <div class="ff"><input type="text" id="cvv" class="fi" placeholder=" " maxlength="4"><label class="fl">CVV</label><div class="fbar"></div></div>
+ </div>
+ </div>
+ <div id="upiFields" class="pm-extra hidden">
+ <div class="ff"><input type="text" id="upiId" class="fi" placeholder=" "><label class="fl">UPI ID</label><div class="fbar"></div></div>
+ </div>
+ </div>
+ <button type="submit" class="btn-place-order"><span>Place Order</span><div class="po-shine"></div></button>
+ </form>
+ </div>
+ <div class="co-summary-col">
+ <div class="order-glass sticky-og">
+ <div class="og-title">Your Order</div>
+ <div id="orderItems" class="co-order-items"></div>
+ <div class="og-sep"></div>
+ <div class="og-rows">
+ <div class="og-row"><span>Subtotal</span><span id="orderSubtotal">Rs 0</span></div>
+ <div class="og-row"><span>Tax (8%)</span><span id="orderTax">Rs 0</span></div>
+ </div>
+ <div class="og-sep"></div>
+ <div class="og-total"><span>Total</span><span class="og-total-val" id="orderTotal">Rs 0</span></div>
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
+ <section id="confirmationPage" class="page">
+ <div class="confirm-world">
+ <canvas id="confirmCanvas"></canvas>
+ <div class="confirm-card">
+ <div class="confirm-ring-wrap">
+ <svg class="confirm-svg" viewBox="0 0 100 100"><circle class="cr-bg" cx="50" cy="50" r="42"/><circle class="cr-fill" id="crFill" cx="50" cy="50" r="42"/></svg>
+ <div class="confirm-checkmark" id="confirmCheck"></div>
+ </div>
+ <h2 class="confirm-h2">Order Confirmed!</h2>
+ <p class="confirm-p">Your books are on their way to inspire you.</p>
+ <div class="confirm-grid">
+ <div class="cg-item"><span class="cg-k">Order ID</span><span class="cg-v mono" id="orderIdDisplay">#—</span></div>
+ <div class="cg-item"><span class="cg-k">Total</span><span class="cg-v" id="confirmationTotal">Rs 0</span></div>
+ <div class="cg-item"><span class="cg-k">Status</span><span class="cg-badge">Confirmed</span></div>
+ <div class="cg-item"><span class="cg-k">Delivery</span><span class="cg-v">3–5 Business Days</span></div>
+ </div>
+ <div class="confirm-btns">
+ <button class="btn-primary" data-page="home">Continue Shopping</button>
+ <button class="btn-ghost-sm" data-page="profile">My Orders</button>
+ </div>
+ </div>
+ </div>
+ </section>
+ <section id="wishlistPage" class="page">
+ <div class="inner-wrap">
+ <div class="iw-head">
+ <span class="iw-tag">Saved for Later</span>
+ <h2 class="iw-h2">My Wishlist</h2>
+ <p class="iw-sub" id="wishlistCountText">0 books saved</p>
+ </div>
+ <div class="wishlist-grid" id="wishlistGrid"></div>
+ <div class="cat-empty hidden" id="wishlistEmpty">
+ <p class="cat-empty-icon"></p>
+ <h3>Your wishlist is empty</h3>
+ <p>Click the on any book to save it here</p>
+ <button class="btn-primary" data-page="home" style="margin-top:20px">Browse Books</button>
+ </div>
+ </div>
+ </section>
+ <section id="profilePage" class="page">
+ <div class="inner-wrap">
+ <div class="iw-head">
+ <span class="iw-tag">My Universe</span>
+ <h2 class="iw-h2">Profile</h2>
+ </div>
+ <div class="profile-layout">
+ <div class="profile-card">
+ <div class="pc-ring">
+ <div class="pc-inner" id="profileAvatarLetter">A</div>
+ </div>
+ <h3 class="pc-name" id="profileName">—</h3>
+ <p class="pc-email" id="profileEmail">—</p>
+ <div class="pc-stats">
+ <div class="pcstat"><span class="pcstat-v" id="profileOrderCount">0</span><span class="pcstat-k">Orders</span></div>
+ <div class="pcstat-sep"></div>
+ <div class="pcstat"><span class="pcstat-v" id="profileWishlistCount">0</span><span class="pcstat-k">Wishlist</span></div>
+ <div class="pcstat-sep"></div>
+ <div class="pcstat"><span class="pcstat-v" id="profileSpend">Rs 0</span><span class="pcstat-k">Spent</span></div>
+ </div>
+ <button class="btn-ghost-sm full" id="editProfileBtn" style="margin-bottom:8px"> Edit Profile</button>
+ <button class="btn-ghost-sm full" id="logoutBtnProfile"> Sign Out</button>
+ </div>
+ <div class="orders-history-panel">
+ <div class="profile-tabs">
+ <button class="ptab active" data-ptab="orders">Order History</button>
+ <button class="ptab" data-ptab="reviews">My Reviews</button>
+ <button class="ptab" data-ptab="edit">Edit Profile</button>
+ </div>
+ <div id="ptabOrders" class="ptab-content active">
+ <div id="orderHistoryList"></div>
+ </div>
+ <div id="ptabReviews" class="ptab-content">
+ <div id="myReviewsList"></div>
+ </div>
+ <div id="ptabEdit" class="ptab-content">
+ <form id="editProfileForm" class="edit-profile-form">
+ <h3 class="fb-title" style="margin-bottom:24px">Update Your Details</h3>
+ <div class="ff"><input type="text" id="editName" class="fi" placeholder=" "><label class="fl">Full Name</label><div class="fbar"></div></div>
+ <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:24px 0">
+ <h4 style="color:var(--muted);margin-bottom:16px;font-size:0.85rem;letter-spacing:0.05em">Change Password (optional)</h4>
+ <div class="ff"><input type="password" id="editCurrentPassword" class="fi" placeholder=" "><label class="fl">Current Password</label><div class="fbar"></div></div>
+ <div class="ff"><input type="password" id="editNewPassword" class="fi" placeholder=" "><label class="fl">New Password</label><div class="fbar"></div></div>
+ <div class="ff"><input type="password" id="editConfirmPassword" class="fi" placeholder=" "><label class="fl">Confirm New Password</label><div class="fbar"></div></div>
+ <button type="submit" class="btn-submit" style="margin-top:16px"><span>Save Changes</span><div class="btn-submit-shine"></div></button>
+ </form>
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
+ <section id="bookDetailPage" class="page">
+ <div class="inner-wrap">
+ <button class="btn-back" id="backBtn"> Back</button>
+ <div class="book-detail-layout" id="bookDetailContent"></div>
+ <div class="book-reviews-section">
+ <h3 class="ohp-title">Reader Reviews</h3>
+ <div id="reviewForm" class="review-form-wrap hidden"></div>
+ <div id="reviewList"></div>
+ </div>
+ <div class="similar-books-section" id="similarBooksSection">
+ <h3 class="ohp-title">You Might Also Like</h3>
+ <div class="similar-books-grid" id="similarBooksGrid"></div>
+ </div>
+ </div>
+ </section>
+</main>
+<footer class="footer">
+ <div class="footer-glow-line"></div>
+ <div class="footer-body">
+ <div class="footer-brand">
+ <div class="fb-logo">Tales &amp; Trails</div>
+ <p>Where extraordinary stories find extraordinary readers. Books that reshape minds and spark imagination.</p>
+ </div>
+ <div class="footer-col">
+ <h4>Navigate</h4>
+ <a href="#" data-page="home">Catalogue</a>
+ <a href="#" data-page="cart">Cart</a>
+ <a href="#" data-page="auth">Account</a>
+ </div>
+ <div class="footer-col">
+ <h4>Contact</h4>
+ <p>info@trailsandtrails.com</p>
+ <p>+91 230-30xxxxx</p>
+ <p>Chennai, Tamil Nadu</p>
+ </div>
+ </div>
+ <div class="footer-bar">
+ <span>© 2025 Tales &amp; Trails. All rights reserved.</span>
+ <span class="footer-bar-right">Where every tale leads to a new trail.</span>
+ </div>
+</footer>
+<div class="toast hidden" id="toast">
+ <div class="toast-dot" id="toastDot"></div>
+ <span id="toastText"></span>
+ <button class="toast-close" id="toastClose"></button>
+</div>
+<div class="mobile-nav-bar" id="mobileNavBar">
+  <button class="mnb-item" data-page="home" id="mnbHome">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
+    Catalogue
+  </button>
+  <button class="mnb-item" data-page="cart" id="mnbCart">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    Cart
+    <span class="mnb-badge" id="mnbCartBadge" style="display:none">0</span>
+  </button>
+  <button class="mnb-item" data-page="wishlist" id="mnbWishlist">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+    Wishlist
+  </button>
+  <button class="mnb-item" data-page="profile" id="mnbProfile">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Account
+  </button>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
